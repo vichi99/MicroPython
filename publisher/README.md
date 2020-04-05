@@ -2,6 +2,7 @@
 
 - Main script for publish measured data from `Nodemcu` via MicroPython to mqtt broker.
 - Measured data are temperature and humidity by using `DHT22` sensor.
+- Interval sending measured can be synchronize on zero seconds by minutes or interval is setted by second and sending is ASAP.
 - Script operate with my [utils classes](https://github.com/vichi99/ESP8266/tree/master/utils) `mqtt` and `wifi`.
 
 # Installation
