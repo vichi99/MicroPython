@@ -1,4 +1,4 @@
-# Utils scripts
+# Utils
 Scripts for servicing main scripts.
 
 
