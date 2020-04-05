@@ -8,3 +8,6 @@ There is place for my own scripts for controlling `Nodemcu` device.
 
 
 - Tip for flash and connect with `ESP8266` [is here.](https://github.com/vichi99/utils)
+
+# License
+- Code: [MIT](LICENSE)
