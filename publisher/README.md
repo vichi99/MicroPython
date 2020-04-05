@@ -1,6 +1,6 @@
 # Description
 
-- Main script for publish by wifi measured data from `Nodemcu` via MicroPython to mqtt broker.
+- Main script publishing by wifi measured data from `Nodemcu` via MicroPython to mqtt broker.
 - After successfully connect to wifi is setted rtc time by ntp.
 - Measured data are temperature and humidity by using `DHT22` sensor.
 - Interval sending measured can be synchronize on zero seconds by minutes or interval is setted by second and sending is ASAP.
