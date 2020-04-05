@@ -7,8 +7,8 @@ There is place for my own scripts for controlling `Nodemcu` device.
 
 # Manuals
 
-- [Flash MicroPython to ESP8266](Flash_MicroPython_ESP8266.md)
-- [Deploy script/s to ESP8266(MicroPython)](Deploy_MicroPython_scripts_ESP8266.md)
+- [Flash MicroPython to ESP8266](Flash_MicroPython.md)
+- [Deploy script/s to ESP8266(MicroPython)](Deploy_MicroPython_scripts.md)
 
 # Other
 

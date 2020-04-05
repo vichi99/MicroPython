@@ -4,7 +4,7 @@
  
  ## Control
  
- - Check if device is present. [This link](Flash_MicroPython_ESP8266.md) is describing connecting and flashing ESP8266.
+ - Check if device is present. [This link](Flash_MicroPython.md) is describing connecting and flashing ESP8266.
  
  ## Connect
  

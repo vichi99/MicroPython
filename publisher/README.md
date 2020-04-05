@@ -8,7 +8,7 @@
 
 # Installation
 
-- Connecting with device and deploying scripts is described [here.](https://github.com/vichi99/utils/blob/master/Deploy_MicroPython_scripts_ESP8266.md)
+- Connecting with device and deploying scripts is described [here.](https://github.com/vichi99/ESP8266/blob/master/Deploy_MicroPython_scripts.md)
 
 - For this application we need load this files to device. Utils are available [here.](https://github.com/vichi99/ESP8266/tree/master/utils)
 ```
