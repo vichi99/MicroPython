@@ -1,7 +1,10 @@
-# ESP8266
-Scripts for publishing data via MicroPython scripts from `Nodemcu` to mqtt broker.
+# Description
+There is place for my own scripts for controlling `Nodemcu` device.
+
+- [Publisher](https://github.com/vichi99/ESP8266/tree/master/publisher) Main script publishing by wifi measured data(DHT22) from Nodemcu via MicroPython to mqtt broker.
 
 
-# Deploy
+- [Utils](https://github.com/vichi99/ESP8266/tree/master/utils) Partial parts of codes for controll, connecting, publishing and measuring with `Nodemcu`.
 
-Loading scripts to ESP8266 device is desrcibed in this section [Utils](https://github.com/vichi99/utils/blob/master/Deploy_MicroPython_scripts_ESP8266.md)
+
+- Tip for flash and connect with `ESP8266` [is here.](https://github.com/vichi99/utils)
