@@ -4,8 +4,9 @@ Scripts for servicing main scripts.
 
 # WIFI class
 
-It is very simple class created for my own purposes.
-Class obtain connecting to wifi and set time by ntp.
+- It is very simple class created for my own purposes.
+- Class obtain connecting to wifi and set time by ntp.
+- Used [Network module.](https://docs.micropython.org/en/latest/library/network.html)
 
 - `init` input arg:
 ```python
@@ -37,8 +38,9 @@ Make network instance, disconnect from some wifi and set active wifi on True. Ma
 
 # MQTT class
 
-It is very simple class created for my own purposes.
-Class obtain connecting to mqtt broker with option publishing data.
+- It is very simple class created for my own purposes.
+- Class obtain connecting to mqtt broker with option publishing data.
+- Used [MQTT Client.](https://github.com/micropython/micropython-lib/blob/master/umqtt.simple/umqtt/simple.py)
 
 - `init` make mqtt client instance, disconnect from some mqqt broker.
 
