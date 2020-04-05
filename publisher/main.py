@@ -27,7 +27,7 @@ GMT = 2
 ############## SEND DATA INTERVAL #########################
 # 1. CHOICE Data meas/send will start in whole minute with zero seconds etc. (12:02:00)
 # Set minutes interval for sending data. Higher priority then 2. CHOICE. 
-SYNC_SEND_DATA = None
+SYNC_SEND_DATA = 1
 
 # 2. CHOICE Data meas/send will ASAP by setted seconds interval.
 # For using 2. CHOICE you have to set 'None' to 1. CHOICE
@@ -39,11 +39,11 @@ WIFI_SSID = ""
 WIFI_PASSWORD = ""
 
 # MQTT TOPIC settings.
-DEV_NAME = "device_1"
 DEV_PLACE = "pokoj"
+DEV_NAME = "device_1"
 # MEASURED values topic
-TEMP_TOPIC = DEV_NAME + "/" + DEV_PLACE + "/" + "teplota"
-HUM_TOPIC = DEV_NAME + "/" + DEV_PLACE + "/" + "vlhkost"
+TEMP_TOPIC = DEV_PLACE + "/" + DEV_NAME + "/" + "teplota"
+HUM_TOPIC = DEV_PLACE + "/" + DEV_NAME + "/" + "vlhkost"
 
 MQTT_IP = ""
 MQTT_USER = "test" # optional - depend on mqtt broker
@@ -63,10 +63,15 @@ class Main():
     def _send_data(self):
         """
         Meas dht22 data and publish temperature and humidity via mqtt.
-        """    
-        self._dht22.measure() # important for take actual values
-        self.mqtt.publish(TEMP_TOPIC, str(self._dht22.temperature()))
-        self.mqtt.publish(HUM_TOPIC, str(self._dht22.humidity()))
+        """
+        try:    
+            self._dht22.measure() # important for take actual values
+            self.mqtt.publish(TEMP_TOPIC, str(self._dht22.temperature()))
+            self.mqtt.publish(HUM_TOPIC, str(self._dht22.humidity()))
+            print("\tdata sended at `{}`".format(localtime()))
+        except:
+            print("\tdata unable to send `{}`".format(localtime()))
+            pass
 
 
     # Main loop
@@ -94,15 +99,14 @@ class Main():
         
             if SYNC_SEND_DATA is not None:
                 if second == 0 and minute % SYNC_SEND_DATA == 0:
-                    print("\nsending sync data...")
-                    print(localtime())
-                    # send_data()
+                    # print("\nsending sync data...")
+                    self._send_data()
             else:
                 if second % INTERVAL_SEND_DATA == 0:
-                    print("\nsending interval data...")
-                    print(localtime())
-                    # self._send_data()
+                    # print("\nsending interval data...")
+                    self._send_data()
 
-def f():
+
+if __name__ == "__main__":
     main = Main()
     main.main()
