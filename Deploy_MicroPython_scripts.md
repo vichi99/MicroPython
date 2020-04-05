@@ -18,7 +18,12 @@
  ```
  - After succesffully connecting you should see information header and python prompt `>>>`.  Now you can type MicroPython commands.
  
- Tip: For exit type `ctrl-a` and `ctrl-q`.
+ - On MacOS you can use for connect this command.
+ ```
+ screen /dev/tty.SLAB_USBtoUART 115200
+ ```
+ 
+ Tip: For exit `picocom `type `ctrl-a` and `ctrl-q`.
  
  ## Load scripts
  
