@@ -19,7 +19,7 @@ class Wifi():
         """        
         self._ssid = ssid
         self._password = password
-        self._gmt = gmt
+        self._gmt = gmt 
         self.con_wifi = network.WLAN(network.STA_IF)
         self._reload(True)
         self._rtc = RTC()
