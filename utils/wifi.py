@@ -53,9 +53,9 @@ class Wifi():
         self.con_wifi.connect(self._ssid, self._password)
         print("Wifi:")
         while not self.con_wifi.isconnected():
-            print("\tconnecting...")
+            print("\twifi connecting...")
             sleep(4)
-        print('\tconnected -config: {}'.format(self.con_wifi.ifconfig()))
+        print('\twifi connected -config: {}'.format(self.con_wifi.ifconfig()))
         self._set_time()
 
     def disconnect(self):

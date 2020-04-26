@@ -17,37 +17,35 @@ from mqtt import Mqtt
 from dht import DHT22
 from machine import Pin
 from utime import sleep, localtime
+import ujson
 
 # MEASURED device - DHT22
-dht22_pin = 14
+# CONFIG["DHT22_PIN"]
 
 # Timezone GMT
-GMT = 2
+# CONFIG["GMT"]
 
 ############## SEND DATA INTERVAL #########################
 # 1. CHOICE Data meas/send will start in whole minute with zero seconds etc. (12:02:00)
-# Set minutes interval for sending data. Higher priority then 2. CHOICE. 
-SYNC_SEND_DATA = 1
+# Set minutes(int) interval for sending data. Higher priority then 2. CHOICE. 
+# CONFIG["SYNC_SEND_DATA"]
 
-# 2. CHOICE Data meas/send will ASAP by setted seconds interval.
-# For using 2. CHOICE you have to set 'None' to 1. CHOICE
-INTERVAL_SEND_DATA = 5
+# 2. CHOICE Data meas/send will ASAP by setted seconds interval(int).
+# For using 2. CHOICE you have to set null(in json) to 1. CHOICE
+# CONFIG["INTERVAL_SEND_DATA"]
 ###########################################################
 
-# WIFI
-WIFI_SSID = ""
-WIFI_PASSWORD = ""
 
-# MQTT TOPIC settings.
-DEV_PLACE = "pokoj"
-DEV_NAME = "device_1"
-# MEASURED values topic
-TEMP_TOPIC = DEV_PLACE + "/" + DEV_NAME + "/" + "teplota"
-HUM_TOPIC = DEV_PLACE + "/" + DEV_NAME + "/" + "vlhkost"
+CONFIG = {}
 
-MQTT_IP = ""
-MQTT_USER = "test" # optional - depend on mqtt broker
-MQTT_PASS = "test" # optional - depend on mqtt broker
+def load_config():
+    global CONFIG
+    try:
+        with open("config.json") as f:
+            CONFIG = ujson.loads(f.read())
+    except OSError:
+        pass
+
 
 class Main():
     """
@@ -55,9 +53,9 @@ class Main():
     Run this class by call 'main'
     """
     def __init__(self):
-        self.wifi = Wifi(ssid=WIFI_SSID, password=WIFI_PASSWORD, gmt=GMT)
-        self.mqtt = Mqtt(ip=MQTT_IP, user=MQTT_USER, password=MQTT_PASS)
-        self._dht22 = DHT22(Pin(dht22_pin))
+        self.wifi = Wifi(ssid=CONFIG["WIFI_SSID"], password=CONFIG["WIFI_PASSWORD"], gmt=CONFIG["GMT"])
+        self.mqtt = Mqtt(ip=CONFIG["MQTT_IP"], user=CONFIG["MQTT_USER"], password=CONFIG["MQTT_PASS"])
+        self._dht22 = DHT22(Pin(CONFIG["DHT22_PIN"]))
 
 
     def _send_data(self):
@@ -66,11 +64,14 @@ class Main():
         """
         try:    
             self._dht22.measure() # important for take actual values
-            self.mqtt.publish(TEMP_TOPIC, str(self._dht22.temperature()))
-            self.mqtt.publish(HUM_TOPIC, str(self._dht22.humidity()))
-            print("\tdata sended at `{}`".format(localtime()))
-        except:
-            print("\tdata unable to send `{}`".format(localtime()))
+            data =  {   "date": localtime(),
+                        "temp": str(self._dht22.temperature()),
+                        "hum":  str(self._dht22.humidity())
+                    }
+            data = ujson.dumps(data)
+            self.mqtt.publish(CONFIG["DEV_1_TOPIC"], data)
+        except Exception as ex:
+            print("\t_send_data unable to send `{}`".format(ex))
             pass
 
 
@@ -97,16 +98,17 @@ class Main():
             minute = localtime()[4]
             second = localtime()[5]
         
-            if SYNC_SEND_DATA is not None:
-                if second == 0 and minute % SYNC_SEND_DATA == 0:
+            if CONFIG["SYNC_SEND_DATA"] is not None:
+                if second == 0 and minute % CONFIG["SYNC_SEND_DATA"] == 0:
                     # print("\nsending sync data...")
                     self._send_data()
             else:
-                if second % INTERVAL_SEND_DATA == 0:
+                if second % CONFIG["INTERVAL_SEND_DATA"] == 0:
                     # print("\nsending interval data...")
                     self._send_data()
 
 
 if __name__ == "__main__":
+    load_config()
     main = Main()
     main.main()

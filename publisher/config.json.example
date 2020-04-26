@@ -1,0 +1,13 @@
+
+{
+    "DHT22_PIN": 14,
+    "GMT": 2,
+    "SYNC_SEND_DATA": 1,
+    "INTERVAL_SEND_DATA": null,
+    "WIFI_SSID": "",
+    "WIFI_PASSWORD": "",
+    "DEV_1_TOPIC": "pokoj/device_1/data",
+    "MQTT_IP": "",
+    "MQTT_USER": "",
+    "MQTT_PASS": ""
+}
