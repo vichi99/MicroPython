@@ -1,4 +1,4 @@
- # Prepare ESP8226 for MicroPython
+ # Prepare Nodemcu(ESP8226) for MicroPython
  ![nodemcu](images/nodemcu_pinout.jpg)
  
  ## Control Device
@@ -16,7 +16,7 @@
  
  ## Dependencies
  
- - Download MicroPython for our esp8266 module. You can download it from [this page](http://micropython.org/download#esp8266). My latest choice was `esp8266-20191220-v1.12.bin`.
+ - Download MicroPython for our Nodemcu(esp8266) module. You can download it from [this page](http://micropython.org/download#esp8266). My latest choice was `esp8266-20191220-v1.12.bin`.
  
  - For deploying we will use [esptool](https://github.com/espressif/esptool/) which can install it using pip:
  ```

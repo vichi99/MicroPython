@@ -1,10 +1,10 @@
 
- # Deploy MicroPython scripts to ESP8226
+ # Deploy MicroPython scripts to Nodemcu(ESP8266)
  ![nodemcu](images/nodemcu_pinout.jpg)
  
  ## Control
  
- - Check if device is present. [This link](Flash_MicroPython.md) is describing connecting and flashing ESP8266.
+ - Check if device is present. [This link](Flash_MicroPython.md) is describing connecting and flashing Nodemcu.
  
  ## Connect
  
@@ -12,7 +12,7 @@
  ```
  sudo apt-get install -y picocom
  ```
- - Type this command for connecting to ESP8266. Check your device tty path.
+ - Type this command for connecting to Nodemcu. Check your device tty path.
  ```
  picocom -b 115200 --flow n /dev/tty.SLAB_USBtoUART
  ```
@@ -42,7 +42,7 @@
 ```
 ampy -p /dev/tty.SLAB_USBtoUART put main.py 
 ```
-- If we want immediately run some script from ESP8266 with output we might type:
+- If we want immediately run some script from Nodemcu with output we might type:
 ```
 ampy -p /dev/tty.SLAB_USBtoUART run main.py 
 ```

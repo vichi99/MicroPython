@@ -1,5 +1,5 @@
 # Description
-There is place for my own scripts for controlling `Nodemcu` device.
+There is place for my own scripts in MicroPython e.g. for controlling `Nodemcu` device.
 
 # Function Code
 
@@ -7,8 +7,8 @@ There is place for my own scripts for controlling `Nodemcu` device.
 
 # Manuals
 
-- [Flash MicroPython to ESP8266](Flash_MicroPython.md)
-- [Deploy script/s to ESP8266(MicroPython)](Deploy_MicroPython_scripts.md)
+- [Flash MicroPython to Nodemcu](Flash_MicroPython.md)
+- [Deploy script/s to Nodemcu(MicroPython)](Deploy_MicroPython_scripts.md)
 - [Set WebREPL](WebREPL_set.md) For `put` and `get` scripts from `nodemcu` using wifi.
 
 # Other

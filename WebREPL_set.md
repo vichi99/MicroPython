@@ -1,5 +1,6 @@
 
- # Set WebREPL to ESP8226
+ # Set WebREPL to Nodemcu(ESP8226)
+ - For put and get scripts from nodemcu using wifi.
  - In addition to the serial line we can use for `put` and `get` file from `nodemcu` WebREPL, too.
  
  ## Usage
