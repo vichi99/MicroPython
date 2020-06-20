@@ -11,49 +11,40 @@
 - Connecting with device and deploying scripts is described [here.](https://github.com/vichi99/ESP8266/blob/master/Deploy_MicroPython_scripts.md)
 
 - For this application we need load this files to device. Utils are available [here.](https://github.com/vichi99/ESP8266/tree/master/utils)
+
+- Make config file.
 ```
 boot.py
 main.py
+config.json
 ../utils/mqtt.py
 ../utils/wifi.py
 ```
 
 # Usage
 
-- Before runing scripts is important fill this settings in `main.py`.
+- Before runing scripts is important make `config.json` from `config.json.example` and fill it.
 ```python
+"DHT22_PIN": 14
 
-# MEASURED device - DHT22
-dht22_pin = 14
-
-# Timezone GMT
-GMT = 2
+# Timezone
+"GMT": 2
 
 ############## SEND DATA INTERVAL #########################
 # 1. CHOICE Data meas/send will start in whole minute with zero seconds etc. (12:02:00)
 # Set minutes interval for sending data. Higher priority then 2. CHOICE. 
-SYNC_SEND_DATA = None
+"SYNC_SEND_DATA": 1,
 
 # 2. CHOICE Data meas/send will ASAP by setted seconds interval.
 # For using 2. CHOICE you have to set 'None' to 1. CHOICE
-INTERVAL_SEND_DATA = 5
-###########################################################
+"INTERVAL_SEND_DATA": null
 
-# WIFI
-WIFI_SSID = ""
-WIFI_PASSWORD = ""
-
-# MQTT TOPIC settings.
-DEV_NAME = "device_1"
-DEV_PLACE = "pokoj"
-# MEASURED values topic
-TEMP_TOPIC = DEV_NAME + "/" + DEV_PLACE + "/" + "teplota"
-HUM_TOPIC = DEV_NAME + "/" + DEV_PLACE + "/" + "vlhkost"
-
-MQTT_IP = ""
-MQTT_USER = "test" # optional - depend on mqtt broker
-MQTT_PASS = "test" # optional - depend on mqtt broker
-
+"WIFI_SSID": ""
+"WIFI_PASSWORD": ""
+"DEV_1_TOPIC": "pokoj/device_1/data"
+"MQTT_IP": ""
+"MQTT_USER": "" # optional - depend on mqtt broker
+"MQTT_PASS": "" # optional - depend on mqtt broker
 ```
 On this picture below is shown logic this code.
 
