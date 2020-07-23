@@ -43,8 +43,9 @@ config.json
 "WIFI_PASSWORD": ""
 "DEV_1_TOPIC": "pokoj/device_1/data"
 "MQTT_IP": ""
-"MQTT_USER": "" # optional - depend on mqtt broker
-"MQTT_PASS": "" # optional - depend on mqtt broker
+"MQTT_USER": "" # optional
+"MQTT_PASS": "" # optional
+"MQTT_KEEPALIVE": 0 # optional
 ```
 On this picture below is shown logic this code.
 

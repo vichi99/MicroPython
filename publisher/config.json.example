@@ -9,5 +9,6 @@
     "DEV_1_TOPIC": "pokoj/device_1/data",
     "MQTT_IP": "",
     "MQTT_USER": "",
-    "MQTT_PASS": ""
-}
+    "MQTT_PASS": "",
+    "MQTT_KEEPALIVE": 0
+}   

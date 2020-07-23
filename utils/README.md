@@ -45,9 +45,15 @@ Make network instance, disconnect from some wifi and set active wifi on True. Ma
 - `init` make mqtt client instance, disconnect from some mqqt broker.
 
 ```python
-    def __init__(self, ip, user="", password=""):
+    def __init__(self, ip, user="", password="", keepalive=0):
         client_id = ubinascii.hexlify(machine.unique_id())
-        self._mqtt = MQTTClient(client_id=client_id, server=ip, user=user, password=password)
+        self._mqtt = MQTTClient(
+            client_id=client_id,
+            server=ip,
+            user=user,
+            password=password,
+            keepalive=keepalive,
+        )
         self.disconnect()
 ```
 
