@@ -57,7 +57,7 @@ class Wifi:
         print("Wifi:")
         while not self.con_wifi.isconnected():
             print("\twifi connecting...")
-            sleep(4)
+            sleep(10)
         print("\twifi connected -config: {}".format(self.con_wifi.ifconfig()))
         self._set_time()
 
