@@ -16,7 +16,7 @@ from wifi import Wifi
 from mqtt import Mqtt
 from dht import DHT22
 from machine import Pin
-from utime import sleep, localtime
+from utime import sleep, localtime, ticks_diff, ticks_ms, sleep_ms
 import ujson
 
 ######## DATA FORMAT
@@ -82,7 +82,7 @@ class Main:
         Meas dht22 data and publish temperature and humidity via mqtt.
         """
         try:
-            local_time = localtime()
+            local_time = localtime()[:-2] # remove mili and micro seconds
             self.dht22.measure()  # important for take actual values
             data = {
                 "name": CONFIG["NAME_DEVICE"],
@@ -103,8 +103,6 @@ class Main:
         Main loop.
         """
         while True:
-            sleep(1)
-
             ######## WIFI CHECK
             if not self.wifi.is_connected():
                 self.is_sending_synchronizate = False
@@ -119,22 +117,25 @@ class Main:
                     continue
 
             ######## INTERVAL & SEND DATA
-            minute = localtime()[4]
-            second = localtime()[5]
             
             ### check sending data with synchro time
             if CONFIG["SYNC_SEND_DATA"]:
                 # if synchronizate sending setted
                 # waiting on whole minute with 0 seconds
                 if not self.is_sending_synchronizate:
+                    second = localtime()[5]
                     if second != 0:
+                        # if not synchronizated
                         continue
                     self.is_sending_synchronizate = True
 
             ### Sending data
-            if second % CONFIG["INTERVAL_SEND_DATA"] == 0:
-                # print("\nsending interval data...")
-                self._send_data()
+            start = ticks_ms()
+            self._send_data()
+            # count difference in sending time
+            diff = ticks_diff(ticks_ms(), start) # ms
+            # minus of interval from config, for ensure better timing
+            sleep_ms((CONFIG["INTERVAL_SEND_DATA"] * 1000) - diff)
 
 
 if __name__ == "__main__":
