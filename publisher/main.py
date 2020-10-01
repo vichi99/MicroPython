@@ -102,7 +102,10 @@ class Main:
         """
         Main loop.
         """
+        start = ticks_ms()
+        first_start = True # defined for timing interval
         while True:
+            sleep_ms(50)
             ######## WIFI CHECK
             if not self.wifi.is_connected():
                 self.is_sending_synchronizate = False
@@ -129,13 +132,16 @@ class Main:
                         continue
                     self.is_sending_synchronizate = True
 
-            ### Sending data
-            start = ticks_ms()
-            self._send_data()
-            # count difference in sending time
+            #### Sending data 
+            # timing sending data this way is not the best solution
+            # if you want excelent timig. Find better solution.
             diff = ticks_diff(ticks_ms(), start) # ms
-            # minus of interval from config, for ensure better timing
-            sleep_ms((CONFIG["INTERVAL_SEND_DATA"] * 1000) - diff)
+            if first_start or diff >= CONFIG["INTERVAL_SEND_DATA"] * 1000:
+                first_start = False
+                start = ticks_ms()
+                self._send_data()
+
+
 
 
 if __name__ == "__main__":
