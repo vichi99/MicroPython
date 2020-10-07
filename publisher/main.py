@@ -48,6 +48,7 @@ import ujson
 
 CONFIG = {}
 
+
 def load_config():
     global CONFIG
     try:
@@ -73,7 +74,15 @@ class Main:
             ip=CONFIG["MQTT_IP"],
             user=CONFIG["MQTT_USER"],
             password=CONFIG["MQTT_PASS"],
+            keepalive=CONFIG["MQTT_KEEPALIVE"],
         )
+        self.mqtt.set_last_will(
+            topic=CONFIG["LW_TOPIC"],
+            msg=ujson.dumps(CONFIG["LW_MSG_OFFLINE"]),
+            retain=CONFIG["LW_RETAIN"],
+            qos=CONFIG["LW_QOS"],
+        )
+
         self.dht22 = DHT22(Pin(CONFIG["DHT22_PIN"]))
         self.is_sending_synchronizate = False
 
@@ -82,17 +91,20 @@ class Main:
         Meas dht22 data and publish temperature and humidity via mqtt.
         """
         try:
-            local_time = localtime()[:-2] # remove mili and micro seconds
+            local_time = localtime()[:-2]  # remove mili and micro seconds
             self.dht22.measure()  # important for take actual values
-            data = {
+            temp = {
                 "name": CONFIG["NAME_DEVICE"],
-                "position": CONFIG["POSITION"],
                 "date": local_time,
-                "temperature": str(self.dht22.temperature()),
-                "humidity": str(self.dht22.humidity()),
+                "value": str(self.dht22.temperature()),
             }
-            data = ujson.dumps(data)
-            self.mqtt.publish(CONFIG["DEV_TOPIC"], data)
+            hum = {
+                "name": CONFIG["NAME_DEVICE"],
+                "date": local_time,
+                "value": str(self.dht22.humidity()),
+            }
+            self.mqtt.publish(CONFIG["TOPIC_TEMP"], ujson.dumps(temp), retain=True)
+            self.mqtt.publish(CONFIG["TOPIC_HUM"], ujson.dumps(hum), retain=True)
         except Exception as ex:
             print("\t_send_data unable to send `{}`".format(ex))
             pass
@@ -103,7 +115,7 @@ class Main:
         Main loop.
         """
         start = ticks_ms()
-        first_start = True # defined for timing interval
+        first_start = True  # defined for timing interval
         while True:
             sleep_ms(50)
             ######## WIFI CHECK
@@ -115,12 +127,19 @@ class Main:
             ######## MQTT CHECK
             if not self.mqtt.is_connected():
                 self.is_sending_synchronizate = False
+
                 if not self.mqtt.connect():
                     sleep(10)
                     continue
-
+                else:
+                    # on connect
+                    self.mqtt.publish(
+                        CONFIG["LW_TOPIC"],
+                        ujson.dumps(CONFIG["LW_MSG_ONLINE"]),
+                        retain=True,
+                    )
             ######## INTERVAL & SEND DATA
-            
+
             ### check sending data with synchro time
             if CONFIG["SYNC_SEND_DATA"]:
                 # if synchronizate sending setted
@@ -132,16 +151,14 @@ class Main:
                         continue
                     self.is_sending_synchronizate = True
 
-            #### Sending data 
+            #### Sending data
             # timing sending data this way is not the best solution
             # if you want excelent timig. Find better solution.
-            diff = ticks_diff(ticks_ms(), start) # ms
+            diff = ticks_diff(ticks_ms(), start)  # ms
             if first_start or diff >= CONFIG["INTERVAL_SEND_DATA"] * 1000:
                 first_start = False
                 start = ticks_ms()
                 self._send_data()
-
-
 
 
 if __name__ == "__main__":
