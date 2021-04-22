@@ -16,5 +16,5 @@
   "LW_MSG_ONLINE": { "value": true },
   "LW_MSG_OFFLINE": { "value": false },
   "LW_QOS": 0,
-  "LW_RETAIN": true
+  "LW_RETAIN": false
 }

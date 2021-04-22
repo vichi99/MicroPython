@@ -6,6 +6,10 @@
  - run this command for check actual tty state. 
  ``` 
  ls /dev/tty.* 
+ ``` 
+ - On some pc with usb-c you could se device like:
+ ``` 
+ ls /dev/cu.* 
  ```
  
  - Now connect device to USB, rerun the command and check changes in output. We should see like `/dev/tty.SLAB_USBtoUART` or something similar. If not go to [this page](https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers) and download CP210x USB driver.

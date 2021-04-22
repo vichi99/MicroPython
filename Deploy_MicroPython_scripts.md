@@ -18,7 +18,7 @@
  ```
  - After succesffully connecting you should see information header and python prompt `>>>`.  Now you can type MicroPython commands.
  
- - On MacOS you can use for connect this command.
+ - On MacOS you can use for connect this command. On some pc with usb-c you could se device like `ls /dev/cu.*`
  ```
  screen /dev/tty.SLAB_USBtoUART 115200
  ```
