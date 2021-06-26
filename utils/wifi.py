@@ -47,7 +47,7 @@ class Wifi:
             self.con_wifi.disconnect()
         self.con_wifi.active(set_active)
 
-    def connect(self):
+    def connect(self,sleep_time=10):
         """
         Infinity loop for connecting to wifi.
         If successfull then return.
@@ -57,7 +57,7 @@ class Wifi:
         print("Wifi:")
         while not self.con_wifi.isconnected():
             print("\twifi connecting...")
-            sleep(10)
+            sleep(sleep_time)
         print("\twifi connected -config: {}".format(self.con_wifi.ifconfig()))
         self._set_time()
 
