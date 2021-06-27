@@ -14,12 +14,14 @@
 
 - Make config file.
 
-```
+- Copy these files to nodemcu:
+
+```sh
 boot.py
 main.py
 config.json
-../utils/mqtt.py
-../utils/wifi.py
+mqtt.py # from utils
+wifi.py # from utils
 ```
 
 # Usage
