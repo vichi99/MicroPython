@@ -3,6 +3,7 @@
 - After successfully connect to wifi is running while loop for check btn press, timer off check and request input.
 - Short btn press will cause switch to next level pwm duty.
 - Long btn press will cause switch off.
+- Gui is available in local network. For find ip address is necessarily conect to tty NodeMCU, scan newtwork or connect to router.
 - Script operate with my [utils classes](https://github.com/vichi99/ESP8266/tree/master/utils) `wifi`.
 
 # Installation
