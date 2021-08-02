@@ -25,10 +25,11 @@ pwm.freq(5000)
 
 DUTY_LEVELS=[0,1,5,50,100]
 MAX_DUTY=1023
-ACTUAL_PERC_PWM= 0
+ACTUAL_PERC_PWM = 0
 DELAY_BTN_PRESS = 1000
-LED_OFF_HOUR = "23"
-LED_OFF_MINUTE = "00"
+DELAY_CONTROL_WIFI = 300000 # 5 min
+LED_OFF_HOUR = 23
+LED_OFF_MINUTE = 59
 ##############
 
 def timer_check():
@@ -39,7 +40,8 @@ def timer_check():
   hour = int(local_time[3])
   minute = int(local_time[4])
   sec = int(local_time[5])
-  if int(LED_OFF_HOUR) == hour and int(LED_OFF_MINUTE) == minute and sec == 0:
+  # print("{}:{}".format(hour,minute))
+  if LED_OFF_HOUR == hour and LED_OFF_MINUTE == minute and sec == 0:
     turn_off_led()
 
 def btn_check():
@@ -77,7 +79,7 @@ def turn_off_led():
   set_perc_pwm(DUTY_LEVELS[0])
 
 def web_page():
-  
+
   html = """<html><head>
   <title>LED</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -109,7 +111,7 @@ def web_page():
   <p><a href="/?led=100"><button class="button button2">100%</button></a></p>
   <form>
 
-  <p>Casovac vypnuti na: <strong>"""+LED_OFF_HOUR+""":"""+LED_OFF_MINUTE+"""</strong></p>
+  <p>Casovac vypnuti na: <strong>"""+str(LED_OFF_HOUR)+""":"""+str(LED_OFF_MINUTE)+"""</strong></p>
   <input type="time" id="from" name="from"
     required>
   <input type="submit" value="Nastavit">
@@ -125,7 +127,17 @@ s.listen(5)
 
 def web_app_loop():
   global LED_OFF_HOUR, LED_OFF_MINUTE
+  if USE_AP_WIFI:
+    acecss_point_network()
+  else:
+    local_network()
+    wifi_time = time.ticks_ms()
   while True:
+    # check wifi connect
+    if not USE_AP_WIFI and time.ticks_ms() - wifi_time > DELAY_CONTROL_WIFI:
+      local_network()
+      wifi_time = time.ticks_ms()
+
     # select for sync control input from web and btn press
     r, w, err = select.select((s,), (), (), 0.1)
     if r:
@@ -151,8 +163,8 @@ def web_app_loop():
           elif led_txt == '/?led=100':
             set_perc_pwm(100)
           elif led_from == 6:
-            LED_OFF_HOUR = led_txt[led_txt.find("from")+5:].split("%3A")[0]
-            LED_OFF_MINUTE = led_txt[led_txt.find("from")+5:].split("%3A")[1]
+            LED_OFF_HOUR = int(led_txt[led_txt.find("from")+5:].split("%3A")[0])
+            LED_OFF_MINUTE = int(led_txt[led_txt.find("from")+5:].split("%3A")[1])
 
           response = web_page()
           conn.send('HTTP/1.1 200 OK\n')
@@ -169,4 +181,5 @@ def web_app_loop():
 def m():
   web_app_loop()
 
+USE_AP_WIFI = False
 m()

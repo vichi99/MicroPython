@@ -16,19 +16,25 @@ esp.osdebug(None)
 gc.collect()
 
 from wifi import Wifi
+
 with open("config.json") as f:
     CONFIG = ujson.loads(f.read())
 
-def local():
-  wifi = Wifi(
-    ssid=CONFIG["WIFI_SSID"],
-    password=CONFIG["WIFI_PASSWORD"],
-    gmt=CONFIG["GMT"],
-  )
-  wifi.connect(1)
+wifi_net = Wifi(
+  ssid=CONFIG["WIFI_SSID"],
+  password=CONFIG["WIFI_PASSWORD"],
+  gmt=CONFIG["GMT"],
+)
+def local_network():
+  global wifi_net
+  if not wifi_net.is_connected():
+    print(wifi_net.is_connected())
+    wifi_net.connect(loop=False)
+  else:
+    print(wifi_net.is_connected())
 
 
-def ap():
+def acecss_point_network():
   ssid = 'LED-M'
   password = '123456789'
 
@@ -43,7 +49,4 @@ def ap():
   print('AP created successfully')
   print(ap.ifconfig())
 
-# ap()
-local()
-
-# https://randomnerdtutorials.com/esp32-esp8266-micropython-web-server/
+  # https://randomnerdtutorials.com/esp32-esp8266-micropython-web-server/

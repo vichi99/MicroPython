@@ -29,13 +29,18 @@ class Wifi:
         """
         synchronize time with ntp and set rtc localtime by setted gmt.
         """
-        sleep(2)
-        ntptime.settime()
-        (year, month, mday, hour, minute, second, weekday, yearday) = localtime(
-            time() + (3600 * self._gmt)
-        )
-        self._rtc.datetime((year, month, mday, 0, hour, minute, second, 0))
-        print("\nTime setted: {}".format(localtime()))
+        for i in range(5):
+            sleep(4)
+            try:
+                ntptime.settime()
+                (year, month, mday, hour, minute, second, weekday, yearday) = localtime(
+                    time() + (3600 * self._gmt)
+                )
+                self._rtc.datetime((year, month, mday, 0, hour, minute, second, 0))
+                print("\nTime setted: {}".format(localtime()))
+                break
+            except Exception as ex:
+                print("\nTime not setted: {}".format(ex))
 
     def _reload(self, set_active):
         """
@@ -47,19 +52,32 @@ class Wifi:
             self.con_wifi.disconnect()
         self.con_wifi.active(set_active)
 
-    def connect(self,sleep_time=10):
+    def connect(self,sleep_time=10, loop=True):
         """
         Infinity loop for connecting to wifi.
         If successfull then return.
+
+        :param sleep_time: timeout at while loop defaults to 10
+        :type sleep_time: int, optional
+        :param loop: set while loop, defaults to True
+        :type loop: bool, optional
         """
         self._reload(True)
         self.con_wifi.connect(self._ssid, self._password)
         print("Wifi:")
-        while not self.con_wifi.isconnected():
-            print("\twifi connecting...")
+        if loop:
+            while not self.is_connected():
+                print("\twifi connecting...")
+                sleep(sleep_time)
+            print("\twifi connected -config: {}".format(self.con_wifi.ifconfig()))
+            self._set_time()
+        else:
             sleep(sleep_time)
-        print("\twifi connected -config: {}".format(self.con_wifi.ifconfig()))
-        self._set_time()
+            if self.is_connected():
+                print("\twifi connected -config: {}".format(self.con_wifi.ifconfig()))
+                self._set_time()
+            else:
+                print("\twifi not connected -config: {}".format(self.con_wifi.ifconfig()))
 
     def disconnect(self):
         """
