@@ -5,7 +5,8 @@
  
  ## Usage
  
- - Connect to device prompt by [described here.](https://github.com/vichi99/ESP8266/blob/master/Deploy_MicroPython_scripts_ESP8266.md)
+ - Connect to device prompt by [described here.](https://github.com/vichi99/MicroPython/blob/master/Deploy_MicroPython_scripts.md)
+
  - Type `import webrepl_setup`.
  You will see some like this.
  ```python
