@@ -9,7 +9,7 @@ HW box for control led strips through mqtt broker and button above bed.
 # Installation
 
 - Connecting with the device and deploying scripts is described [here.](https://github.com/vichi99/ESP8266/blob/master/Deploy_MicroPython_scripts.md)
-    - Use `firmware-combined.bin` for flash nodemcu
+    - Use `firmware-combined.bin` for flash nodemcu.
 
 - Make config file from `config.json.example` to `config.json`.
 
@@ -31,7 +31,7 @@ On my nodemcu I had problem with mqtt subscribing. The issue is described here [
 
 # Constructions
 - [installation box](https://www.hadex.cz/o158a-instalacni-krabicka-b120-120x80x50mm/)
-- [led strips](https://www.hadex.cz/k011a-100-led-pasek-10mm-bily-teply-60x-led5730m-ip20-civka-5m/) - uses only 2M
+- [led strips](https://www.hadex.cz/k011a-100-led-pasek-10mm-bily-teply-60x-led5730m-ip20-civka-5m/) - used 2 meters
 - [power supply 12V](https://www.hadex.cz/g721-napajec-sagemcom-xkd-2000ic120-24w-12v2a-konc55x21mm/)
 - [step down](https://www.hadex.cz/m406-napajeci-modul-step-down-menic-3a-s-lm2596/)
 - [NodeMCU](https://www.hadex.cz/m430e-modul-nodemcu-lua-wifi-esp8266-cp2102-vyvojovy-modul/)

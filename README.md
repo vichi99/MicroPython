@@ -4,7 +4,7 @@ There is place for my own scripts in MicroPython e.g. for controlling `Nodemcu` 
 # Function Code
 
 - [Publisher](https://github.com/vichi99/ESP8266/tree/master/publisher) Main script publishing by wifi measured data(DHT22) from Nodemcu via MicroPython to mqtt broker.
-- [Led Bed](https://github.com/vichi99/ESP8266/tree/master/led_bed) Script for control led strips through wifi and button above bed.
+- [Led Bed](https://github.com/vichi99/ESP8266/tree/master/led_bed) Script for control led strips through mqtt and button above bed.
 
 # Manuals
 
