@@ -1,42 +1,36 @@
-# Description
-- Scripts for control led strips through wifi and button above bed.
-- After successfully connect to wifi is running while loop for check btn press, timer off check and request input.
+# LED BED
+HW box for control led strips through mqtt broker and button above bed.
+- There is 2 async loop:
+  - First is connecting to internet and mqtt broker. Then will be subscribe topics changing values for led and timer off.
+  - Second loop checking button press and timer off.
 - Short btn press will cause switch to next level pwm duty.
 - Long btn press will cause switch off.
-- Gui is available in local network. For find ip address is necessarily conect to tty NodeMCU, scan newtwork or connect to router.
-- Script operate with my [utils classes](https://github.com/vichi99/ESP8266/tree/master/utils) `wifi`.
 
 # Installation
 
-- Connecting with device and deploying scripts is described [here.](https://github.com/vichi99/ESP8266/blob/master/Deploy_MicroPython_scripts.md)
+- Connecting with the device and deploying scripts is described [here.](https://github.com/vichi99/ESP8266/blob/master/Deploy_MicroPython_scripts.md)
+    - Use `firmware-combined.bin` for flash nodemcu
 
-- For this application we need load this files to device. Utils are available [here.](https://github.com/vichi99/ESP8266/tree/master/utils)
+- Make config file from `config.json.example` to `config.json`.
 
-- Make config file.
+- Check constants at the `main.py`
 
 - Copy these files to nodemcu:
 
 ```sh
-boot.py
 main.py
 config.json
-wifi.py # from utils
 ```
 
-# Usage
+# Issues
+## #1
+On my nodemcu I had problem with mqtt subscribing. The issue is described here [https://forum.micropython.org/viewtopic.php?t=4694](https://forum.micropython.org/viewtopic.php?t=4694)
+- The solution is using `mqtt_as.py` from [https://github.com/peterhinch/micropython-mqtt/tree/master/mqtt_as](https://github.com/peterhinch/micropython-mqtt/tree/master/mqtt_as). However the file `mqtt_as.py` cannot by loaded directly to nodemcu. It has to be included into binaries which is flashed to nodemcu. Make binaries are described here [https://github.com/micropython/micropython/tree/master/ports/esp8266](https://github.com/micropython/micropython/tree/master/ports/esp8266)
+- The result binaries file is [firmware-combined.bin](firmware-combined.bin)
 
-- Before runing scripts is important make `config.json` from `config.json.example` and fill it.
-
-```python
-# Timezone
-"GMT": 2
-# Wifi for connect
-"WIFI_SSID": ""
-"WIFI_PASSWORD": ""
-```
 
 # Constructions
-- [instalation box](https://www.hadex.cz/o158a-instalacni-krabicka-b120-120x80x50mm/)
+- [installation box](https://www.hadex.cz/o158a-instalacni-krabicka-b120-120x80x50mm/)
 - [led strips](https://www.hadex.cz/k011a-100-led-pasek-10mm-bily-teply-60x-led5730m-ip20-civka-5m/) - uses only 2M
 - [power supply 12V](https://www.hadex.cz/g721-napajec-sagemcom-xkd-2000ic120-24w-12v2a-konc55x21mm/)
 - [step down](https://www.hadex.cz/m406-napajeci-modul-step-down-menic-3a-s-lm2596/)
@@ -52,6 +46,3 @@ wifi.py # from utils
 ![box](imgs/box.png)
 ![box_2](imgs/box_2.png)
 ![btn](imgs/btn.png)
-
-# GUI from mobile
-![screen](imgs/screen_mobile.png)

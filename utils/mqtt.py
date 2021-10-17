@@ -1,6 +1,6 @@
 import ubinascii, machine
 from utime import sleep
-from umqtt.simple import MQTTClient
+from umqtt.robust import MQTTClient
 
 
 class Mqtt:
@@ -8,19 +8,21 @@ class Mqtt:
     Class obtain connecting to mqtt broker and sending data.
     """
 
-    def __init__(self, ip, user="", password="", keepalive=0):
+    def __init__(self, ip, user="", password="", keepalive=5, ssl=False, port=1883):
         client_id = ubinascii.hexlify(machine.unique_id())
-        self._mqtt = MQTTClient(
-            client_id=client_id,
+        self.client = MQTTClient(
+            client_id=b"81502d43",
             server=ip,
             user=user,
             password=password,
             keepalive=keepalive,
+            port=port,
+            ssl=ssl,
         )
         self.disconnect()
-
+        self.client.DEBUG = True
     def set_last_will(self, topic, msg, retain, qos):
-        self._mqtt.set_last_will(topic, msg, retain, qos)
+        self.client.set_last_will(topic, msg, retain, qos)
 
     def is_connected(self):
         """
@@ -31,7 +33,7 @@ class Mqtt:
 
     def disconnect(self):
         try:
-            self._mqtt.disconnect()
+            self.client.disconnect()
         except:
             pass
 
@@ -44,7 +46,7 @@ class Mqtt:
         """
         print("\nMQTT conecting...")
         try:
-            _ret = self._mqtt.connect()
+            _ret = self.client.connect()
             print(_ret)
             if _ret == 0:
                 print("\tMQTT connected to broker.")
@@ -58,7 +60,7 @@ class Mqtt:
         """
         Sending message data to current topic.
         This function is useful for check connection, too.
-        
+
         :param topic: topic, defaults to ""
         :type topic: str, optional
         :param msg: message to send, defaults to ""
@@ -73,7 +75,7 @@ class Mqtt:
         try:
             if allow_print:
                 print("\tSending message '{}' to topic '{}'".format(msg, topic))
-            self._mqtt.publish(topic=topic, msg=msg, retain=retain, qos=qos)
+            self.client.publish(topic=topic, msg=msg, retain=retain, qos=qos)
             if allow_print:
                 print("\t\tSending OK")
             return True

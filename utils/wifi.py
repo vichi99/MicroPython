@@ -52,20 +52,20 @@ class Wifi:
             self.con_wifi.disconnect()
         self.con_wifi.active(set_active)
 
-    def connect(self,sleep_time=10, loop=True):
+    def connect(self,sleep_time=10, infinity_loop=True):
         """
-        Infinity loop for connecting to wifi.
+        Loop for connecting to wifi.
         If successfull then return.
 
         :param sleep_time: timeout at while loop defaults to 10
         :type sleep_time: int, optional
-        :param loop: set while loop, defaults to True
-        :type loop: bool, optional
+        :param infinity_loop: set infinite while loop, defaults to True
+        :type infinity_loop: bool, optional
         """
         self._reload(True)
         self.con_wifi.connect(self._ssid, self._password)
         print("Wifi:")
-        if loop:
+        if infinity_loop:
             while not self.is_connected():
                 print("\twifi connecting...")
                 sleep(sleep_time)

@@ -1,5 +1,18 @@
 {
-  "GMT": 2,
+  
   "WIFI_SSID": "",
   "WIFI_PASSWORD": "",
+  "MQTT_IP": "",
+  "MQTT_USER": "",
+  "MQTT_PASS": "",
+  "MQTT_KEEPALIVE": 10,
+  "MQTT_QOS": 1,
+  "TOPIC_LED_PERCENT": "",
+  "TOPIC_LED_PERCENT_STATUS": "",
+  "TOPIC_LED_TIMER_OFF": "",
+  "TOPIC_LED_TIMER_OFF_STATUS": "",
+  "LW_TOPIC": "",
+  "LW_MSG_ONLINE": "1",
+  "LW_MSG_OFFLINE":"0",
+  "LW_RETAIN": true
 }
