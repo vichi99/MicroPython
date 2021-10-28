@@ -58,8 +58,8 @@ class Main:
 
         # init mqtt client including wifi
         self.config = config
-        self.config["subs_cb"] = self.subscribe_mqtt  # subscribe callback
-        self.config["connect_coro"] = self.set_subscribe_mqtt  # set subscribed topics
+        self.config["subs_cb"] = self.on_message  # subscribe callback
+        self.config["connect_coro"] = self.on_connect
         self.config["server"] = CONFIG["MQTT_IP"]
         self.config["user"] = CONFIG["MQTT_USER"]
         self.config["password"] = CONFIG["MQTT_PASS"]
@@ -73,7 +73,6 @@ class Main:
             CONFIG["MQTT_QOS"],
         ]
         MQTTClient.DEBUG = DEBUG  # Optional: print diagnostic messages
-        self.client = MQTTClient(self.config)
 
     def btn_check(self):
         """
@@ -146,7 +145,7 @@ class Main:
     def _decode_bytes(self, value):
         return value.decode("utf-8")
 
-    def subscribe_mqtt(self, topic, msg, retained):
+    def on_message(self, topic, msg, retained):
         print("Income msg: ", (topic, msg, retained))
         _topic = self._decode_bytes(topic)
         try:
@@ -201,9 +200,23 @@ class Main:
             except Exception as ex:
                 print("\nTime not setted: {}".format(ex))
 
-    async def set_subscribe_mqtt(self, client):
+    async def on_connect(self, client):
         await client.subscribe(CONFIG["TOPIC_LED_PERCENT"], CONFIG["MQTT_QOS"])
         await client.subscribe(CONFIG["TOPIC_LED_TIMER_OFF"], CONFIG["MQTT_QOS"])
+        # LW message device is online
+        await self.client.publish(
+            CONFIG["LW_TOPIC"],
+            CONFIG["LW_MSG_ONLINE"],
+            retain=True,
+            qos=CONFIG["MQTT_QOS"],
+        )
+        # Led level message
+        await self.client.publish(
+            CONFIG["TOPIC_LED_PERCENT_STATUS"],
+            str(self.actual_perc_pwm),
+            retain=True,
+            qos=CONFIG["MQTT_QOS"],
+        )
 
     async def connection_loop(self):
         """
@@ -211,33 +224,20 @@ class Main:
         """
         while True:
             try:
+                self.client = MQTTClient(self.config)
                 value = self.actual_perc_pwm
                 timer = self._get_timer_off_for_mqtt()
                 await self.client.connect()
                 self._set_time()
 
-                # LW message device is online
-                await self.client.publish(
-                    CONFIG["LW_TOPIC"],
-                    CONFIG["LW_MSG_ONLINE"],
-                    retain=True,
-                    qos=CONFIG["MQTT_QOS"],
-                )
-                # Led level message
-                await self.client.publish(
-                    CONFIG["TOPIC_LED_PERCENT_STATUS"],
-                    str(self.actual_perc_pwm),
-                    retain=True,
-                    qos=CONFIG["MQTT_QOS"],
-                )
                 while True:
                     if value != self.actual_perc_pwm:
+                        value = self.actual_perc_pwm
                         print(
                             "Publish '{}' to '{}'".format(
-                                self.actual_perc_pwm, CONFIG["TOPIC_LED_PERCENT_STATUS"]
+                                value, CONFIG["TOPIC_LED_PERCENT_STATUS"]
                             )
                         )
-                        value = self.actual_perc_pwm
                         await self.client.publish(
                             CONFIG["TOPIC_LED_PERCENT_STATUS"],
                             str(self.actual_perc_pwm),
